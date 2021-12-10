@@ -60,8 +60,7 @@ export class AppComponent implements OnInit {
         anchor: [0.5, 41],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
-        scale: 0.5,
-        src: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+        src: 'https://angular-ivy-zp1tik.stackblitz.io/assets/marker-icon-1x.png',
       }),
     });
 
