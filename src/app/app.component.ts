@@ -55,7 +55,6 @@ export class AppComponent implements OnInit {
       rainfall: 500,
     });
 
-    
     const iconStyle = new Style({
       image: new Icon({
         anchor: [0.5, 41],
