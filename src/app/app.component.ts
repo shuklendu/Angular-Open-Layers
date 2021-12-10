@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
       view: new View({
         center: fromLonLat([10, 53.55]),
         zoom: 12,
+        maxZoom: 12,
       }),
       layers: [
         new TileLayer({
