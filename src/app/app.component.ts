@@ -57,7 +57,7 @@ export class AppComponent implements OnInit {
 
     const iconStyle = new Style({
       image: new Icon({
-        anchor: [0, 0],
+        anchor: [0.5, 41],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         scale: 0.5,
