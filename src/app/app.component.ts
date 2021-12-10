@@ -19,13 +19,17 @@ import Point from 'ol/geom/Point';
 export class AppComponent implements OnInit {
   name = 'Angular ' + VERSION.major;
   map: Map;
+  lockList = [
+    [10.48835952, 53.29207698],
+    [12.55650104, 52.40627709],
+    [12.00817351, 52.87847813],
+  ];
 
   ngOnInit(): void {
     this.map = new Map({
       view: new View({
         center: fromLonLat([10, 53.55]),
-        zoom: 12,
-        maxZoom: 12,
+        zoom: 6,
       }),
       layers: [
         new TileLayer({
@@ -48,13 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   createMarkers() {
-    const iconFeature = new Feature({
-      geometry: new Point(fromLonLat([10, 53.55])),
-      name: 'Null Island',
-      population: 4000,
-      rainfall: 500,
-    });
-
+    let icons = [];
     const iconStyle = new Style({
       image: new Icon({
         anchor: [0.5, 41],
@@ -63,16 +61,25 @@ export class AppComponent implements OnInit {
         src: 'https://cdn.jsdelivr.net/gh/shuklendu/Angular-Open-Layers@develop/src/assets/marker-icon.png',
       }),
     });
-
-    iconFeature.setStyle(iconStyle);
-
-    const vectorSource = new VectorSource({
-      features: [iconFeature],
+    this.lockList.forEach((lock) => {
+      console.log(lock);
+      const iconFeature = new Feature({
+        geometry: new Point(fromLonLat(lock)),
+        name: 'Null Island',
+        population: 4000,
+        rainfall: 500,
+      });
+      iconFeature.setStyle(iconStyle);
+      icons.push(iconFeature);
     });
-
+    console.log(icons);
+    const vectorSource = new VectorSource({
+      features: icons,
+    });
     const vectorLayer = new VectorLayer({
       source: vectorSource,
     });
+
     return vectorLayer;
   }
 }
