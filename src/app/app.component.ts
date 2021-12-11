@@ -26,10 +26,18 @@ export class AppComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    let pointsData = this.createMarkers();
+    let extent = pointsData.markers.getSource().getExtent();
     this.map = new Map({
       view: new View({
-        center: fromLonLat([10, 53.55]),
-        zoom: 6,
+        center: fromLonLat(pointsData.center),
+        maxZoom: 16,
+        /* extent: fromLonLat([
+          pointsData.xMin + 1,
+          pointsData.yMin + 1,
+          pointsData.xMax + 1,
+          pointsData.yMax + 1,
+        ]), */
       }),
       layers: [
         new TileLayer({
@@ -37,7 +45,7 @@ export class AppComponent implements OnInit {
             url: 'https://tile.jawg.io/jawg-streets/{z}/{x}/{y}.png?access-token=sWmX5SwjXmDHtQNDFmI7CyUgBqUvRzxpT6CM5sSbBLqxd3bpJxNNAZ2O4Rivf1Eo',
           }),
         }),
-        this.createMarkers(),
+        pointsData.markers,
         /* new TileLayer({
           source: new OSM(),
         }),
@@ -49,10 +57,24 @@ export class AppComponent implements OnInit {
       ],
       target: 'ol-map',
     });
+    this.map.getView().fit(extent, { size: this.map.getSize() });
   }
+
+  getCenter() {}
 
   createMarkers() {
     let icons = [];
+    let xPoints = [];
+    let yPoints = [];
+    let data: any = {
+      markers: '',
+      xMin: 0,
+      xMax: 0,
+      yMin: 0,
+      yMax: 0,
+      center: [0, 0],
+    };
+    let xMin, xMax, yMin, yMax;
     const iconStyle = new Style({
       image: new Icon({
         anchor: [0.5, 41],
@@ -63,6 +85,8 @@ export class AppComponent implements OnInit {
     });
     this.lockList.forEach((lock) => {
       console.log(lock);
+      xPoints.push(lock[0]);
+      yPoints.push(lock[1]);
       const iconFeature = new Feature({
         geometry: new Point(fromLonLat(lock)),
         name: 'Null Island',
@@ -79,7 +103,13 @@ export class AppComponent implements OnInit {
     const vectorLayer = new VectorLayer({
       source: vectorSource,
     });
+    data.markers = vectorLayer;
+    data.xMin = Math.min(...xPoints);
+    data.xMax = Math.max(...xPoints);
+    data.yMin = Math.min(...yPoints);
+    data.yMax = Math.max(...yPoints);
+    data.center = [(data.xMin + data.xMax) / 2, (data.yMin + data.yMax) / 2];
 
-    return vectorLayer;
+    return data;
   }
 }
