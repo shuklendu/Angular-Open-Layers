@@ -58,6 +58,8 @@ export class AppComponent implements OnInit {
       target: 'ol-map',
     });
     this.map.getView().fit(extent, { size: this.map.getSize() });
+    this.map.getView().setZoom(Math.ceil(this.map.getView().getZoom()));
+    console.log('Zoom', this.map.getView().getZoom());
   }
 
   getCenter() {}
