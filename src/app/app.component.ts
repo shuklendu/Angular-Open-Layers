@@ -82,24 +82,20 @@ export class AppComponent implements OnInit {
       console.log(lock);
       xPoints.push(lock[0]);
       yPoints.push(lock[1]);
-      const iconStyle = [
-        new Style({
-          image: new Icon({
-            anchor: [0.5, 41],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            src: 'https://cdn.jsdelivr.net/gh/shuklendu/Angular-Open-Layers@develop/src/assets/marker-icon.png',
-          }),
+      const iconStyle = new Style({
+        image: new Icon({
+          anchor: [0.5, 41],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: 'https://cdn.jsdelivr.net/gh/shuklendu/Angular-Open-Layers@develop/src/assets/marker-icon.png',
         }),
-        new Style({
-          text: new Text({
-            text: lock.count.toString(),
-            offsetY: -25,
-            offsetX: -25,
-            font: 'bold 14px verdana',
-          }),
+        text: new Text({
+          text: lock.count.toString(),
+          offsetY: -25,
+          offsetX: -25,
+          font: 'bold 14px verdana',
         }),
-      ];
+      });
       const iconFeature = new Feature({
         geometry: new Point(fromLonLat(lock.coordinates)),
         name: 'Null Island',
