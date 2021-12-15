@@ -6,7 +6,7 @@ import OSM from 'ol/source/OSM';
 import XYZ from 'ol/source/XYZ';
 import Stamen from 'ol/source/Stamen';
 import { fromLonLat } from 'ol/proj';
-import { Icon, Style } from 'ol/style';
+import { Icon, Style, Text } from 'ol/style';
 import VectorSource from 'ol/source/Vector';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import Point from 'ol/geom/Point';
@@ -20,9 +20,9 @@ export class AppComponent implements OnInit {
   name = 'Angular ' + VERSION.major;
   map: Map;
   lockList = [
-    [10.48835952, 53.29207698],
-    [12.55650104, 52.40627709],
-    [12.00817351, 52.87847813],
+    { coordinates: [10.48835952, 53.29207698], count: 10 },
+    { coordinates: [12.55650104, 52.40627709], count: 20 },
+    { coordinates: [12.00817351, 52.87847813], count: 30 },
   ];
 
   ngOnInit(): void {
@@ -77,20 +77,31 @@ export class AppComponent implements OnInit {
       center: [0, 0],
     };
     let xMin, xMax, yMin, yMax;
-    const iconStyle = new Style({
-      image: new Icon({
-        anchor: [0.5, 41],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: 'https://cdn.jsdelivr.net/gh/shuklendu/Angular-Open-Layers@develop/src/assets/marker-icon.png',
-      }),
-    });
+
     this.lockList.forEach((lock) => {
       console.log(lock);
       xPoints.push(lock[0]);
       yPoints.push(lock[1]);
+      const iconStyle = [
+        new Style({
+          image: new Icon({
+            anchor: [0.5, 41],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            src: 'https://cdn.jsdelivr.net/gh/shuklendu/Angular-Open-Layers@develop/src/assets/marker-icon.png',
+          }),
+        }),
+        new Style({
+          text: new Text({
+            text: lock.count.toString(),
+            offsetY: -25,
+            offsetX: -25,
+            font: 'bold 14px verdana',
+          }),
+        }),
+      ];
       const iconFeature = new Feature({
-        geometry: new Point(fromLonLat(lock)),
+        geometry: new Point(fromLonLat(lock.coordinates)),
         name: 'Null Island',
         population: 4000,
         rainfall: 500,
